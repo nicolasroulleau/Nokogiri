@@ -18,15 +18,14 @@ def gets_the_email_of_townhall_from_its_webpage(url)
 	end
 end
 
-# méthode pour récupérer les url
+# méthode pour récupérer les url et ranger dans un Hash les paires Ville / emails
 def get_all_the_urls_of_valdoise_townhalls
-		town_hash = Hash.new
+		town_hash = Hash.new # création du Hash town_hash
 		page = Nokogiri::HTML(open("http://annuaire-des-mairies.com/val-d-oise.html"))
-		urls = page.css("a.lientxt")
-		urls.each do |url|
-			# puts "http://annuaire-des-mairies.com#{url['href']}"
-			clean_url = "http://annuaire-des-mairies.com"+url['href'][1..url['href'].length]
-			town_hash[url.text] = gets_the_email_of_townhall_from_its_webpage(clean_url)
+		urls = page.css("a.lientxt") # on définit une variable urls qui renvoie à un array des a de classe lientxt
+		urls.each do |url| # itération sur l'array pour obtenir l'élément url
+			clean_url = "http://annuaire-des-mairies.com"+url['href'][1..url['href'].length] # clean url est un string concaténé de http://...et de l'attribut href de l'élément url sans son premier caractère
+			town_hash[url.text] = gets_the_email_of_townhall_from_its_webpage(clean_url) # classement dans le hash
 		end
 		return town_hash
 end
@@ -55,4 +54,5 @@ get_all_the_urls_of_valdoise_townhalls
 # example d'url d'une mairie
 # "http://annuaire-des-mairies.com/95/vaureal.html"
 # gets_the_email_of_townhall_from_its_webpage(clean_url)
+# puts "http://annuaire-des-mairies.com#{url['href']}"
 
